@@ -7,27 +7,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.santos.domain.TodoList;
-import com.santos.repository.TodoListItemRepository;
+import com.santos.repository.TodoListRepository;
 
 @Service
 public class TodoListService {
 	@Autowired
-	TodoListItemRepository repository;
+	TodoListRepository repository;
 	
-	public List<TodoList> todos(){
+	public List<TodoList> getAll(){
 		return repository.findAll();
 	}
-	public TodoList novo (TodoList items) {
+	public TodoList insert (TodoList items) {
 		return repository.save(items);
 	}
-	public TodoList todoList(Integer id) {
+	public TodoList getById(Integer id) {
 		return repository.findById(id).orElseThrow(()->new ListaNaoEncontradaException(id));
 	}
-	public TodoList atualiza (TodoList items, Integer id) {
-		items.setId(id);
+	
+	public TodoList update (TodoList items) {
 		return repository.save(items);
 	}
-	public void deleteTodoList(@PathVariable Integer id) {
+	public void delete(Integer id) {
 		repository.deleteById(id);
 	}
 	

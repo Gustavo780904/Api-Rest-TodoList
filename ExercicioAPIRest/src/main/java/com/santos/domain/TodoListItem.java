@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class TodoListItem implements Serializable {
 
@@ -16,13 +18,15 @@ public class TodoListItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nomeDoItem;
+	
 	@ManyToOne
+	@JsonBackReference
 	private TodoList lista;
 
 	public TodoListItem() {
 	}
 
-	public TodoListItem(String nomeDoItem, TodoList lista, Integer id) {
+	public TodoListItem(Integer id, String nomeDoItem, TodoList lista) {
 		super();
 		this.id = id;
 		this.nomeDoItem = nomeDoItem;

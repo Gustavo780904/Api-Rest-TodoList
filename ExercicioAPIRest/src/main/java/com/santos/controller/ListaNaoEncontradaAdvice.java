@@ -14,7 +14,7 @@ public class ListaNaoEncontradaAdvice {
         @ResponseBody
         @ExceptionHandler(ListaNaoEncontradaException.class)
         @ResponseStatus(HttpStatus.NOT_FOUND)
-        String employeeNotFoundHandler(ListaNaoEncontradaException ex) {
+        String todoListNotFoundHandler(ListaNaoEncontradaException ex) {
                 return ex.getMessage();
         }
 

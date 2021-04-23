@@ -13,36 +13,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.santos.domain.TodoList;
+import com.santos.domain.TodoListItem;
+import com.santos.service.TodoListItemService;
 import com.santos.service.TodoListService;
 
 @RestController
-@RequestMapping("todoList")
+@RequestMapping("/lista")
 public class TodoListController {
 	@Autowired
-	private TodoListService service;
+	private TodoListItemService itemService;
+	@Autowired
+	private TodoListService todoService;
 
 	@GetMapping
-	public List<TodoList> all() {
-		return service.todos();
+	public List<TodoList> list() {
+		return todoService.getAll();
 	}
 
 	@PostMapping
-	public TodoList novo(@RequestBody TodoList todoList) {
-		return service.novo(todoList);
+	public TodoList create(@RequestBody TodoList todoList) {
+		return todoService.insert(todoList);
+	}
+
+	@PostMapping("/{listId}/item")
+	public TodoListItem createItem(@PathVariable Integer listId, @RequestBody TodoListItem item) {
+		TodoList lista = todoService.getById(listId);
+		lista.addItem(item);
+		return itemService.insert(item);
 	}
 
 	@GetMapping("/{id}")
-	public TodoList one(@PathVariable Integer id) {
-		return service.todoList(id);
+	public TodoList read(@PathVariable Integer id) {
+		return todoService.getById(id);
 	}
 
+	@PutMapping("/")
+	public TodoList update(@RequestBody TodoList todoList) {
+		return todoService.update(todoList);
+	}
 	@PutMapping("/{id}")
-	public TodoList replaceTodoList(@RequestBody TodoList todoList, @PathVariable Integer id) {
-		return service.atualiza(todoList, id);
+	public TodoList update(@PathVariable Integer id, @RequestBody TodoList attrs) {
+		TodoList lista = todoService.getById(id);
+		lista.setNome(attrs.getNome());
+		return  todoService.update(lista);
 	}
 
 	@DeleteMapping("/{id}")
-	void deleteTodoList(@PathVariable Integer id) {
-		service.deleteTodoList(id);
+	void delete(@PathVariable Integer id) {
+		todoService.delete(id);
 	}
+
 }

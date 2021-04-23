@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class TodoList implements Serializable {
 
@@ -20,18 +22,25 @@ public class TodoList implements Serializable {
 	private String nome;
 
 	@OneToMany(mappedBy = "lista")
+	@JsonManagedReference
 	private List<TodoListItem> items = new ArrayList<TodoListItem>();
 
 	public TodoList() {
 	}
 
-	public TodoList(String nome, List<TodoListItem> items) {
+	public TodoList(Integer id, String nome, List<TodoListItem> items) {
 		super();
+		this.id = id;
 		this.nome = nome;
+		this.items = items;
+	}
+
+	public Integer getId() {
+		return id;
 	}
 
 	public void setId(Integer id) {
-		this.id = id;
+
 	}
 
 	public String getNome() {
@@ -46,12 +55,13 @@ public class TodoList implements Serializable {
 		return items;
 	}
 
-	public void setItems(List<TodoListItem> items) {
-		this.items = items;
+	public void addItem(TodoListItem item) {
+		item.setLista(this);
+		this.items.add(item);
 	}
 
-	public Integer getId() {
-		return id;
+	public void removeItem(TodoListItem item) {
+		this.items.remove(item);
 	}
 
 	@Override
