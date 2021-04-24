@@ -56,6 +56,7 @@ public class TodoList implements Serializable {
 	}
 
 	public void addItem(TodoListItem item) {
+//		item.setLista();
 		item.setLista(this);
 		this.items.add(item);
 	}
